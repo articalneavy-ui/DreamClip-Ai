@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DreamClip AI</title>
+
+<style>
+body {
+  background: black;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+  padding: 20px;
+}
+
+textarea {
+  width: 90%;
+  height: 120px;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 16px;
+  background: #111;
+  color: white;
+  border: none;
+}
+
+button {
+  margin-top: 20px;
+  padding: 15px;
+  width: 90%;
+  border: none;
+  border-radius: 30px;
+  font-size: 18px;
+  background: linear-gradient(to right, #ff0050, #ff7a00);
+  color: white;
+}
+
+.feed {
+  margin-top: 20px;
+  background: #111;
+  padding: 15px;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🔥 DreamClip AI PRO</h1>
+
+<textarea placeholder="Type viral idea..."></textarea>
+
+<button onclick="generateAI()">Generate 🚀</button>
+
+<div class="feed"></div>
+
+<script>
+
+// ✅ PUT YOUR API KEY HERE
+const HF_API_KEY = "PASTE_YOUR_NEW_KEY_HERE";
+
+async function generateAI() {
+
+  const userPrompt = document.querySelector("textarea").value;
+  const output = document.querySelector(".feed");
+
+  if (!userPrompt) {
+    alert("Enter something first!");
+    return;
+  }
+
+  output.innerHTML = "🔥 Generating...";
+
+  try {
+
+    const res = await fetch(
+      "https://api-inference.huggingface.co/models/bigscience/bloom",
+      {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + "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",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          inputs: userPrompt
+        })
+      }
+    );
+
+    const data = await res.json();
+
+    console.log(data);
+
+    if (data.error) {
+      output.innerHTML = "❌ " + data.error;
+    } else {
+      output.innerHTML = data[0].generated_text;
+    }
+
+  } catch (err) {
+    output.innerHTML = "❌ Failed to connect";
+  }
+}
+
+</script>
+
+</body>
+</html>
